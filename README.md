@@ -1,10 +1,10 @@
 # Twitch Java API (TJA)
-This is a asynchronous Java ported library of the Twitch REST API.
+TJA is an asynchronous Java ported library of the Twitch REST API.
 
 Pull requests welcome.
 
-## Adding SHJA as a dependency
-SHJA currently uses Jitpack https://jitpack.io/#TheLimeGlass/Twitch-Java-API/VERSION
+## Adding TJA as a dependency
+TJA currently uses Jitpack https://jitpack.io/#TheLimeGlass/Twitch-Java-API/VERSION
 ### Maven
 In your `pom.xml` add:
 ```xml
