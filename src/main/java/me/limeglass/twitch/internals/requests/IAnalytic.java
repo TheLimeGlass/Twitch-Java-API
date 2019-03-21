@@ -1,13 +1,12 @@
-package me.limeglass.twitch.internals.objects;
+package me.limeglass.twitch.internals.requests;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import me.limeglass.twitch.api.objects.Analytics;
-import me.limeglass.twitch.internals.Request;
 
-public abstract class IAnalytic implements Request, Analytics {
+public abstract class IAnalytic implements Analytics {
 
 	protected final DateTimeFormatter formatter = DateTimeFormatter
 			.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")

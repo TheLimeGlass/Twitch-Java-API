@@ -5,37 +5,26 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.stream.JsonReader;
 
+import me.limeglass.twitch.api.TwitchClient;
 import me.limeglass.twitch.api.objects.User;
 import me.limeglass.twitch.api.objects.User.BroadcasterType;
 import me.limeglass.twitch.api.objects.User.StaffStatus;
+import me.limeglass.twitch.cache.Cache;
 import me.limeglass.twitch.internals.handlers.Reader;
 import me.limeglass.twitch.internals.objects.IUser;
 import me.limeglass.twitch.internals.responses.UsersResponse;
 
 public class UsersReader extends Reader<UsersResponse> {
 	
-	/*CHEAT-SHEET as of March 20th 2019:
-	https://dev.twitch.tv/docs/api/reference/#get-users
-	--------------------------------------
-	{
-	  "data": [{
-	    "id": "44322889",
-	    "login": "dallas",
-	    "display_name": "dallas",
-	    "type": "staff",
-	    "broadcaster_type": "",
-	    "description": "Just a gamer playing games and chatting. :)",
-	    "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
-	    "offline_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
-	    "view_count": 191836881,
-	    "email": "login@provider.com"
-	  }]
+	private final TwitchClient client;
+	
+	public UsersReader(TwitchClient client) {
+		this.client = client;
 	}
-	--------------------------------------
-	*/
 	
 	@Override
 	protected Optional<UsersResponse> read(JsonReader reader) {
@@ -108,7 +97,9 @@ public class UsersReader extends Reader<UsersResponse> {
 			exception.printStackTrace();
 			return null;
 		}
-		return new IUser(name, type, description, displayName, email, id, offlineImageURL, profileImageURL, staff, viewCount);
+		IUser user = new IUser(name, type, description, displayName, email, id, offlineImageURL, profileImageURL, staff, viewCount);
+		Cache<IUser> cache = client.getCacheService().getCacheOrCreate(IUser.class, 1000, 15, TimeUnit.MINUTES);
+		return cache.putOrGet(user);
 	}
 
 }

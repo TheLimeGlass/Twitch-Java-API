@@ -1,6 +1,8 @@
 package me.limeglass.twitch.internals.handlers;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,8 +33,14 @@ public class ReaderHandler {
 			Class<Response> response = (Class<Response>) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
 			if (readers.keySet().parallelStream().allMatch(reader -> !reader.getClass().equals(clazz))) {
 				try {
+					@SuppressWarnings("rawtypes")
+					Constructor<? extends Reader> constructor = clazz.getDeclaredConstructor(TwitchClient.class);
+					if (constructor != null) {
+						readers.put(constructor.newInstance(client), response);
+						return;
+					}
 					readers.put(clazz.newInstance(), response);
-				} catch (InstantiationException | IllegalAccessException e) {
+				} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 				}
 			}

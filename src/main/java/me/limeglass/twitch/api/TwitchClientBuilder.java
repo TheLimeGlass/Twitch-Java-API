@@ -47,7 +47,7 @@ public final class TwitchClientBuilder {
 	
 	public TwitchClient build() {
 		if (token == null)
-			throw new TwitchException("The SkriptHub token was not set!");
+			throw new TwitchException("The Twitch token was not set!");
 		return new TwitchClient(token, timeout);
 	}
 

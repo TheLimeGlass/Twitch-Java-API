@@ -1,30 +1,28 @@
-package me.limeglass.twitch.internals.objects;
+package me.limeglass.twitch.internals.requests;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.Validate;
-
-public class ExtensionAnalytics extends IAnalytic {
+public class GameAnalytics extends IAnalytic {
 	
-	public ExtensionAnalytics() {}
+	public GameAnalytics() {}
 	
-	public ExtensionAnalytics(String ID) {
+	public GameAnalytics(String ID) {
 		super(ID);
 	}
 	
-	public ExtensionAnalytics(String ID, Date starting, Date ending) {
+	public GameAnalytics(String ID, Date starting, Date ending) {
 		super(ID, starting, ending);
 	}
 	
-	public ExtensionAnalytics(String ID, Date starting, Date ending, String after) {
+	public GameAnalytics(String ID, Date starting, Date ending, String after) {
 		super(ID, starting, ending, after);
 	}
 	
-	public ExtensionAnalytics(String ID, Date starting, Date ending, String after, int first) {
+	public GameAnalytics(String ID, Date starting, Date ending, String after, int first) {
 		super(ID, starting, ending, after, first);
 	}
 	
-	public ExtensionAnalytics(String ID, Date starting, Date ending, String after, int first, ReportType type) {
+	public GameAnalytics(String ID, Date starting, Date ending, String after, int first, ReportType type) {
 		super(ID, starting, ending, after, first, type);
 	}
 	
@@ -127,15 +125,16 @@ public class ExtensionAnalytics extends IAnalytic {
 		/**
 		 * @return Analytic after building.
 		 */
-		public ExtensionAnalytics build() {
-			Validate.notNull(ID, "ID cannot be null");
+		public GameAnalytics build() {
+			if (ID == null)
+				return new GameAnalytics();
 			if (starting == null || ending == null)
-				return new ExtensionAnalytics(ID);
+				return new GameAnalytics(ID);
 			if (after == null)
-				return new ExtensionAnalytics(ID, starting, ending);
+				return new GameAnalytics(ID, starting, ending);
 			if (first <= 0)
-				return new ExtensionAnalytics(ID, starting, ending, after);
-			return new ExtensionAnalytics(ID, starting, ending, after, first, type);
+				return new GameAnalytics(ID, starting, ending, after);
+			return new GameAnalytics(ID, starting, ending, after, first, type);
 		}
 
 	}

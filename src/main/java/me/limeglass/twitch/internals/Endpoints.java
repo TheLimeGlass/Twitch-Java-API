@@ -18,6 +18,11 @@ public class Endpoints {
 	public static final String GAME_ANALYTICS = API + "analytics/games&scope=analytics:read:games";
 	
 	/**
+	 * URL for getting the Bits leaderboard.
+	 */
+	public static final String BITS_LEADERBOARD = API + "bits/leaderboard&scope=bits:read";
+	
+	/**
 	 * URL for getting users by ID or name.
 	 */
 	public static final String USERS = API + "users";

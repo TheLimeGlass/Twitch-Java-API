@@ -1,6 +1,8 @@
 package me.limeglass.twitch.api.objects;
 
-public interface User {
+import me.limeglass.twitch.cache.Cacheable;
+
+public interface User extends Cacheable {
 	
 	public enum BroadcasterType {
 		

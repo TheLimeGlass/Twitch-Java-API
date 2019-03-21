@@ -1,28 +1,30 @@
-package me.limeglass.twitch.internals.objects;
+package me.limeglass.twitch.internals.requests;
 
 import java.util.Date;
 
-public class GameAnalytics extends IAnalytic {
+import org.apache.commons.lang3.Validate;
+
+public class ExtensionAnalytics extends IAnalytic {
 	
-	public GameAnalytics() {}
+	public ExtensionAnalytics() {}
 	
-	public GameAnalytics(String ID) {
+	public ExtensionAnalytics(String ID) {
 		super(ID);
 	}
 	
-	public GameAnalytics(String ID, Date starting, Date ending) {
+	public ExtensionAnalytics(String ID, Date starting, Date ending) {
 		super(ID, starting, ending);
 	}
 	
-	public GameAnalytics(String ID, Date starting, Date ending, String after) {
+	public ExtensionAnalytics(String ID, Date starting, Date ending, String after) {
 		super(ID, starting, ending, after);
 	}
 	
-	public GameAnalytics(String ID, Date starting, Date ending, String after, int first) {
+	public ExtensionAnalytics(String ID, Date starting, Date ending, String after, int first) {
 		super(ID, starting, ending, after, first);
 	}
 	
-	public GameAnalytics(String ID, Date starting, Date ending, String after, int first, ReportType type) {
+	public ExtensionAnalytics(String ID, Date starting, Date ending, String after, int first, ReportType type) {
 		super(ID, starting, ending, after, first, type);
 	}
 	
@@ -125,16 +127,15 @@ public class GameAnalytics extends IAnalytic {
 		/**
 		 * @return Analytic after building.
 		 */
-		public GameAnalytics build() {
-			if (ID == null)
-				return new GameAnalytics();
+		public ExtensionAnalytics build() {
+			Validate.notNull(ID, "ID cannot be null");
 			if (starting == null || ending == null)
-				return new GameAnalytics(ID);
+				return new ExtensionAnalytics(ID);
 			if (after == null)
-				return new GameAnalytics(ID, starting, ending);
+				return new ExtensionAnalytics(ID, starting, ending);
 			if (first <= 0)
-				return new GameAnalytics(ID, starting, ending, after);
-			return new GameAnalytics(ID, starting, ending, after, first, type);
+				return new ExtensionAnalytics(ID, starting, ending, after);
+			return new ExtensionAnalytics(ID, starting, ending, after, first, type);
 		}
 
 	}

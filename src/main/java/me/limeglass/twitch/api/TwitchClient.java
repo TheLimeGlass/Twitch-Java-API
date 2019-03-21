@@ -3,15 +3,20 @@ package me.limeglass.twitch.api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import me.limeglass.twitch.api.objects.BitsLeaderboardSpot;
+import me.limeglass.twitch.api.objects.BitsRequest;
 import me.limeglass.twitch.api.objects.User;
+import me.limeglass.twitch.cache.CacheStorage;
 import me.limeglass.twitch.internals.Endpoints;
 import me.limeglass.twitch.internals.handlers.ServiceRequester;
 import me.limeglass.twitch.internals.handlers.ServiceRequester.HttpMethod;
-import me.limeglass.twitch.internals.objects.ExtensionAnalytics;
 import me.limeglass.twitch.internals.objects.ExtensionAnalyticsReport;
-import me.limeglass.twitch.internals.objects.GameAnalytics;
 import me.limeglass.twitch.internals.objects.GameAnalyticsReport;
 import me.limeglass.twitch.internals.objects.TwitchException;
+import me.limeglass.twitch.internals.requests.ExtensionAnalytics;
+import me.limeglass.twitch.internals.requests.GameAnalytics;
+import me.limeglass.twitch.internals.responses.BitsLeaderboardResponse;
 import me.limeglass.twitch.internals.responses.ExtensionAnalyticsResponse;
 import me.limeglass.twitch.internals.responses.GameAnalyticsResponse;
 import me.limeglass.twitch.internals.responses.UsersResponse;
@@ -19,6 +24,7 @@ import me.limeglass.twitch.internals.responses.UsersResponse;
 public class TwitchClient {
 	
 	private final ServiceRequester serviceRequester;
+	private final CacheStorage cache;
 	private final String token;
 	private final int timeout;
 	
@@ -28,6 +34,7 @@ public class TwitchClient {
 	 * @param token The token used from Twitch.
 	 */
 	public TwitchClient(String token, int timeout) {
+		this.cache = new CacheStorage();
 		this.timeout = timeout;
 		this.token = token;
 		this.serviceRequester = new ServiceRequester(this);
@@ -47,7 +54,7 @@ public class TwitchClient {
 			url.append("&scope=user:edit+user:read:email");
 		return serviceRequester.streamRequest(UsersResponse.class, HttpMethod.GET, url.toString())
 				.filter(optional -> optional.isPresent())
-				.map(optional -> optional.get().getUsers())
+				.map(response -> response.get().getUsers())
 				.findFirst().get();
 	}
 	
@@ -65,7 +72,7 @@ public class TwitchClient {
 			url.append("&scope=user:edit+user:read:email");
 		return serviceRequester.streamRequest(UsersResponse.class, HttpMethod.GET, url.toString())
 				.filter(optional -> optional.isPresent())
-				.map(optional -> optional.get().getUsers())
+				.map(response -> response.get().getUsers())
 				.findFirst().get();
 	}
 	
@@ -80,7 +87,7 @@ public class TwitchClient {
 		List<GameAnalyticsReport> list = new ArrayList<>();
 		serviceRequester.streamRequest(GameAnalyticsResponse.class, HttpMethod.GET, url.toString())
 				.filter(optional -> optional.isPresent())
-				.map(optional -> optional.get().getReports())
+				.map(response -> response.get().getReports())
 				.forEach(set -> list.addAll(set));
 		return list;
 	}
@@ -90,15 +97,37 @@ public class TwitchClient {
 	 * @return ExtensionAnalyticsReport the result from the ExtensionAnalytics'.
 	 */
 	public List<ExtensionAnalyticsReport> getExtensionAnalytics(ExtensionAnalytics... analytics) {
-		StringBuilder url = new StringBuilder(Endpoints.GAME_ANALYTICS);
+		StringBuilder url = new StringBuilder(Endpoints.EXTENSION_ANALYTICS);
 		for (ExtensionAnalytics analytic : analytics)
 			analytic.appendURL(url);
 		List<ExtensionAnalyticsReport> list = new ArrayList<>();
 		serviceRequester.streamRequest(ExtensionAnalyticsResponse.class, HttpMethod.GET, url.toString())
 				.filter(optional -> optional.isPresent())
-				.map(optional -> optional.get().getReports())
+				.map(response -> response.get().getReports())
 				.forEach(set -> list.addAll(set));
 		return list;
+	}
+	
+	/**
+	 * @param analytics The ExtensionAnalytics to grab.
+	 * @return ExtensionAnalyticsReport the result from the ExtensionAnalytics'.
+	 */
+	public List<BitsLeaderboardSpot> getBitsLeaderboard(BitsRequest request) {
+		StringBuilder url = new StringBuilder(Endpoints.BITS_LEADERBOARD);
+		request.appendURL(url);
+		List<BitsLeaderboardSpot> list = new ArrayList<>();
+		serviceRequester.streamRequest(BitsLeaderboardResponse.class, HttpMethod.GET, url.toString())
+				.filter(optional -> optional.isPresent())
+				.map(response -> response.get().getLeaderboard())
+				.forEach(collection -> list.addAll(collection));
+		return list;
+	}
+	
+	/**
+	 * @return the cache
+	 */
+	public CacheStorage getCacheService() {
+		return cache;
 	}
 	
 	/**

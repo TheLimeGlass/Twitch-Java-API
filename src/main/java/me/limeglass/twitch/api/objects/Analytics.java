@@ -2,7 +2,9 @@ package me.limeglass.twitch.api.objects;
 
 import java.util.Date;
 
-public interface Analytics {
+import me.limeglass.twitch.internals.Request;
+
+public interface Analytics extends Request {
 
 	public enum ReportType {
 
@@ -34,14 +36,6 @@ public interface Analytics {
 		}
 
 	}
-	
-	/**
-	 * Used to format the URL string to be requested.
-	 * 
-	 * @param builder The StringBuilder to modify.
-	 * @return The modified StringBuilder.
-	 */
-	StringBuilder appendURL(StringBuilder builder);
 	
 	/**
 	 * @return The ReportType of the analytic.
