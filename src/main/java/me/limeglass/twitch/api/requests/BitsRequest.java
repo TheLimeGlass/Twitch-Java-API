@@ -1,7 +1,8 @@
-package me.limeglass.twitch.api.objects;
+package me.limeglass.twitch.api.requests;
 
 import java.util.Date;
 
+import me.limeglass.twitch.api.objects.User;
 import me.limeglass.twitch.internals.Request;
 import me.limeglass.twitch.internals.requests.IBitsRequest;
 

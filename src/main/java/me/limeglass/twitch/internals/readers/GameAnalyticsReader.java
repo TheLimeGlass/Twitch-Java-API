@@ -9,7 +9,7 @@ import java.util.Set;
 import com.google.api.client.util.DateTime;
 import com.google.gson.stream.JsonReader;
 
-import me.limeglass.twitch.api.objects.Analytics.ReportType;
+import me.limeglass.twitch.api.requests.Analytics.ReportType;
 import me.limeglass.twitch.internals.handlers.Reader;
 import me.limeglass.twitch.internals.objects.GameAnalyticsReport;
 import me.limeglass.twitch.internals.responses.GameAnalyticsResponse;

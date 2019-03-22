@@ -4,7 +4,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import me.limeglass.twitch.api.objects.Analytics;
+import me.limeglass.twitch.api.requests.Analytics;
 
 public abstract class IAnalytic implements Analytics {
 

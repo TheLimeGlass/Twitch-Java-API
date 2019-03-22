@@ -2,8 +2,8 @@ package me.limeglass.twitch.internals.objects;
 
 import java.util.Date;
 
-import me.limeglass.twitch.api.objects.Analytics.ReportType;
 import me.limeglass.twitch.api.objects.AnalyticsReport;
+import me.limeglass.twitch.api.requests.Analytics.ReportType;
 
 public class ExtensionAnalyticsReport implements AnalyticsReport {
 

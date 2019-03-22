@@ -2,7 +2,7 @@ package me.limeglass.twitch.api.objects;
 
 import java.util.Date;
 
-import me.limeglass.twitch.api.objects.Analytics.ReportType;
+import me.limeglass.twitch.api.requests.Analytics.ReportType;
 
 public interface AnalyticsReport {
 	

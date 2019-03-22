@@ -1,4 +1,4 @@
-package me.limeglass.twitch.api.objects;
+package me.limeglass.twitch.api.requests;
 
 import java.util.Date;
 

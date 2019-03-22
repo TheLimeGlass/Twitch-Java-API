@@ -4,8 +4,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import me.limeglass.twitch.api.objects.BitsRequest;
 import me.limeglass.twitch.api.objects.User;
+import me.limeglass.twitch.api.requests.BitsRequest;
 
 public class IBitsRequest implements BitsRequest {
 

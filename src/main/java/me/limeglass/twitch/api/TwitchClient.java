@@ -2,11 +2,12 @@ package me.limeglass.twitch.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import me.limeglass.twitch.api.objects.BitsLeaderboardSpot;
-import me.limeglass.twitch.api.objects.BitsRequest;
+import me.limeglass.twitch.api.objects.BitsLeaderboard;
 import me.limeglass.twitch.api.objects.User;
+import me.limeglass.twitch.api.requests.BitsRequest;
 import me.limeglass.twitch.cache.CacheStorage;
 import me.limeglass.twitch.internals.Endpoints;
 import me.limeglass.twitch.internals.handlers.ServiceRequester;
@@ -109,18 +110,16 @@ public class TwitchClient {
 	}
 	
 	/**
-	 * @param analytics The ExtensionAnalytics to grab.
-	 * @return ExtensionAnalyticsReport the result from the ExtensionAnalytics'.
+	 * @param request The BitsRequest.
+	 * @return BitsLeaderboard containing all the information of the leaderboard.
 	 */
-	public List<BitsLeaderboardSpot> getBitsLeaderboard(BitsRequest request) {
+	public Optional<BitsLeaderboard> getBitsLeaderboard(BitsRequest request) {
 		StringBuilder url = new StringBuilder(Endpoints.BITS_LEADERBOARD);
 		request.appendURL(url);
-		List<BitsLeaderboardSpot> list = new ArrayList<>();
-		serviceRequester.streamRequest(BitsLeaderboardResponse.class, HttpMethod.GET, url.toString())
+		return serviceRequester.streamRequest(BitsLeaderboardResponse.class, HttpMethod.GET, url.toString())
 				.filter(optional -> optional.isPresent())
 				.map(response -> response.get().getLeaderboard())
-				.forEach(collection -> list.addAll(collection));
-		return list;
+				.findFirst();
 	}
 	
 	/**

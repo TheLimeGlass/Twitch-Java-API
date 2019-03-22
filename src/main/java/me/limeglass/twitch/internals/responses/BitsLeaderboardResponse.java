@@ -1,23 +1,20 @@
 package me.limeglass.twitch.internals.responses;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import me.limeglass.twitch.api.objects.BitsLeaderboardSpot;
+import me.limeglass.twitch.api.objects.BitsLeaderboard;
 import me.limeglass.twitch.internals.Response;
 
 public class BitsLeaderboardResponse implements Response {
 	
-	private final List<BitsLeaderboardSpot> leaderboard = new ArrayList<>();
+	private final BitsLeaderboard leaderboard;
 	
-	public BitsLeaderboardResponse(Collection<BitsLeaderboardSpot> leaderboard) {
-		this.leaderboard.addAll(leaderboard);
+	public BitsLeaderboardResponse(BitsLeaderboard leaderboard) {
+		this.leaderboard = leaderboard;
 	}
 	
 	/**
-	 * @return The users from this request.
+	 * @return The BitsLeaderboard from this request.
 	 */
-	public List<BitsLeaderboardSpot> getLeaderboard() {
+	public BitsLeaderboard getLeaderboard() {
 		return leaderboard;
 	}
 
