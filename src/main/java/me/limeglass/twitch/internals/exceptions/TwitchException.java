@@ -1,9 +1,9 @@
-package me.limeglass.twitch.internals.objects;
+package me.limeglass.twitch.internals.exceptions;
 
 public class TwitchException extends RuntimeException {
 
 	private static final long serialVersionUID = -23155841375847179L;
-	private String message;
+	private final String message;
 
 	public TwitchException(String message) {
 		super(message);

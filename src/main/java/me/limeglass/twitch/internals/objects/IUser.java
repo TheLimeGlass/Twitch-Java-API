@@ -65,8 +65,8 @@ public class IUser implements User {
 	}
 
 	@Override
-	public long getCacheID() {
-		return Long.parseLong(ID);
+	public String getCacheID() {
+		return ID;
 	}
 
 }

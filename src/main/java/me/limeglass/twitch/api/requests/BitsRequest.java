@@ -76,7 +76,20 @@ public interface BitsRequest extends Request {
 			this.starting = starting;
 			this.period = period;
 		}
-		
+
+		/**
+		 * The date at which the leaderboard starts at and the period of such.
+		 * 
+		 * @parm owner Owner of the Broadcaster to look for bits from.
+		 * @param starting The starting Date to base off of.
+		 * @parm period Period of the leaderboard.
+		 */
+		public Builder(User owner, Date starting, Period period) {
+			this.starting = starting;
+			this.period = period;
+			this.user = owner;
+		}
+
 		/**
 		 * Create a builder for BitsLeaderboardSpots. Based on the current user.
 		 * As long as count is greater than 1, the returned data includes additional users, with Bits amounts above and below the user specified by User.

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.map.LRUMap;
@@ -15,7 +16,7 @@ import org.apache.commons.collections4.map.LRUMap;
 public class Cache<T extends Cacheable> {
 
 	private final ReadWriteLock lock = new ReentrantReadWriteLock();
-	private final LRUMap<Long, CacheObject<T>> map;
+	private final LRUMap<String, CacheObject<T>> map;
 
 	public Cache() {
 		this(1000, 15, TimeUnit.MINUTES);
@@ -31,7 +32,7 @@ public class Cache<T extends Cacheable> {
 				} catch (InterruptedException e) {}
 				long now = System.currentTimeMillis();
 				synchronized (map) {
-					MapIterator<Long, CacheObject<T>> iterator = map.mapIterator();
+					MapIterator<String, CacheObject<T>> iterator = map.mapIterator();
 					while (iterator.hasNext()) {
 						CacheObject<T> object = iterator.getValue();
 						if (now > (time + object.getLastAccessed()))
@@ -44,21 +45,38 @@ public class Cache<T extends Cacheable> {
 		thread.start();
 	}
 
-	public Optional<CacheObject<T>> retrieve(long id) {
+	public Optional<CacheObject<T>> retrieve(String id) {
 		lock.readLock().lock();
 		try {
-			Optional<CacheObject<T>> object = Optional.ofNullable(map.get(id));
-			if (object.isPresent())
-				object.get().updateAccessed();
-			return object;
+			Optional<CacheObject<T>> optional = Optional.ofNullable(map.get(id));
+			optional.ifPresent(object -> object.updateAccessed());
+			return optional;
 		} finally {
 			lock.readLock().unlock();
 		}
 	}
-	
+
+	public Optional<T> checkAgainst(Predicate<CacheObject<T>> predicate) {
+		lock.readLock().lock();
+		try {
+			return map.values().parallelStream()
+					.filter(predicate)
+					.map(object -> {
+						object.updateAccessed();
+						return object.getValue();
+					})
+					.findFirst();
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
 	public T putOrGet(T obj) {
-		if (map.containsKey(obj.getCacheID()))
-			return map.get(obj.getCacheID()).getValue();
+		if (map.containsKey(obj.getCacheID())) {
+			CacheObject<T> object = map.get(obj.getCacheID());
+			object.updateAccessed();
+			return object.getValue();
+		}
 		lock.writeLock().lock();
 		try {
 			map.put(obj.getCacheID(), new CacheObject<T>(obj));
@@ -77,7 +95,7 @@ public class Cache<T extends Cacheable> {
 		}
 	}
 
-	public Optional<CacheObject<T>> remove(long id) {
+	public Optional<CacheObject<T>> remove(String id) {
 		lock.writeLock().lock();
 		try {
 			return Optional.ofNullable(map.remove(id));
@@ -97,7 +115,7 @@ public class Cache<T extends Cacheable> {
 		}
 	}
 
-	public boolean contains(long id) {
+	public boolean contains(String id) {
 		lock.readLock().lock();
 		try {
 			return map.containsKey(id);
@@ -124,7 +142,7 @@ public class Cache<T extends Cacheable> {
 		}
 	}
 
-	public Set<Long> longIDs() {
+	public Set<String> longIDs() {
 		lock.readLock().lock();
 		try {
 			return map.keySet();
@@ -142,7 +160,7 @@ public class Cache<T extends Cacheable> {
 		}
 	}
 
-	public void forEach(BiConsumer<? super Long, ? super CacheObject<T>> action) {
+	public void forEach(BiConsumer<? super String, ? super CacheObject<T>> action) {
 		lock.readLock().lock();
 		try {
 			map.forEach(action);

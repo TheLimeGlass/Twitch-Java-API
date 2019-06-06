@@ -23,8 +23,18 @@ public class Endpoints {
 	public static final String BITS_LEADERBOARD = API + "bits/leaderboard&scope=bits:read";
 	
 	/**
+	 * URL for getting games on Twitch.
+	 */
+	public static final String GAMES = API + "games";
+	
+	/**
 	 * URL for getting users by ID or name.
 	 */
 	public static final String USERS = API + "users";
+	
+	/**
+	 * URL for getting clips of a broadcaster.
+	 */
+	public static final String CLIPS = API + "clips";
 
 }

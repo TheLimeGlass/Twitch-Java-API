@@ -75,7 +75,7 @@ public class BitsLeaderboardReader extends Reader<BitsLeaderboardResponse> {
 					case "user_id":
 						String ID = reader.nextString();
 						if (cache.isPresent()) {
-							Optional<CacheObject<IUser>> optional = cache.get().retrieve(Long.parseLong(ID));
+							Optional<CacheObject<IUser>> optional = cache.get().retrieve(ID);
 							if (optional.isPresent()) {
 								user = optional.get().getValue();
 								break;

@@ -24,8 +24,8 @@ public class MainExample {
 		}
 		//alternative constructor if you please.
 		//instance = new TwitchClientBuilder(config.getString("client.token")).build();
-		client = new TwitchClientBuilder()
-				.withToken(configuration.getString("client.token"))
+		client = new TwitchClientBuilder("TestBot") // Username of the bot
+				.withToken(configuration.getString("client.token")) // TestBot account's token
 				.withTimeout(10000)
 				.build();
 		UsersExample.execute(client);
