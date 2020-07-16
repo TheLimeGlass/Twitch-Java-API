@@ -19,7 +19,7 @@ dependencies {
 	shade (group: 'org.apache.commons', name: 'commons-collections4', version: '4.0')
 
 	// Lang 3
-	shade (group: 'org.apache.commons', name: 'commons-lang3', version: '3.9')
+	shade (group: 'org.apache.commons', name: 'commons-lang3', version: '3.10')
 
 	// Reflections
 	shade (group: 'org.reflections', name: 'reflections', version: '0.9.12')
