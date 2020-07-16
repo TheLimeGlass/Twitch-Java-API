@@ -31,7 +31,7 @@ dependencies {
 	shade (group: 'com.google.flogger', name: 'flogger', version: '0.5.1')
 
 	// Configurations
-	testCompile 'org.apache.commons:commons-configuration2:2.6'
+	testCompile 'org.apache.commons:commons-configuration2:2.7'
 	testCompile 'commons-beanutils:commons-beanutils:1.9.4'
 	testCompile 'org.apache.commons:commons-lang3:3.9'
 	testCompile 'org.apache.commons:commons-jexl:2.1.1'
