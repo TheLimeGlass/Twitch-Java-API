@@ -19,7 +19,7 @@ dependencies {
 	shade (group: 'org.apache.commons', name: 'commons-collections4', version: '4.0')
 
 	// Lang 3
-	shade (group: 'org.apache.commons', name: 'commons-lang3', version: '3.10')
+	shade (group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0')
 
 	// Reflections
 	shade (group: 'org.reflections', name: 'reflections', version: '0.9.12')
@@ -33,7 +33,7 @@ dependencies {
 	// Configurations
 	testCompile 'org.apache.commons:commons-configuration2:2.7'
 	testCompile 'commons-beanutils:commons-beanutils:1.9.4'
-	testCompile 'org.apache.commons:commons-lang3:3.9'
+	testCompile 'org.apache.commons:commons-lang3:3.12.0'
 	testCompile 'org.apache.commons:commons-jexl:2.1.1'
 	testCompile 'commons-logging:commons-logging:1.2'
 	testCompile 'commons-jxpath:commons-jxpath:1.3'
